@@ -7,19 +7,23 @@ const httperror = require("./models/error");
 const mongoose = require("mongoose");
 
 const responsableRoute = require('./routes/responsable')
+const serviceRoute = require('./routes/service')
 
 app.use(bodyParser.json());
 
-app.use(function (req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept"
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader(
+    'Access-Control-Allow-Headers',
+    'Origin, X-Requested-With, Content-Type, Accept, Authorization'
   );
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE');
+
   next();
 });
 
 app.use('/api/responsable',responsableRoute)
+app.use('/api/service',serviceRoute)
 
 app.use((req, res, next) => {
   const error = new httperror("could not find that page", 404);
