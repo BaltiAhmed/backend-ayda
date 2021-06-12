@@ -8,6 +8,8 @@ const mongoose = require("mongoose");
 
 const responsableRoute = require('./routes/responsable')
 const serviceRoute = require('./routes/service')
+const agriculteurRoutes = require('./routes/agriculteur')
+const clientRoutes = require('./routes/client')
 
 app.use(bodyParser.json());
 
@@ -24,6 +26,8 @@ app.use((req, res, next) => {
 
 app.use('/api/responsable',responsableRoute)
 app.use('/api/service',serviceRoute)
+app.use('/api/agriculteur',agriculteurRoutes)
+app.use('/api/client',clientRoutes)
 
 app.use((req, res, next) => {
   const error = new httperror("could not find that page", 404);
