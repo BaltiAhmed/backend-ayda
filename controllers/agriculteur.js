@@ -67,6 +67,8 @@ const login = async (req, res, next) => {
     return next(new httpError("invalid input passed", 422));
   }
   const { email, password } = req.body;
+  
+  console.log(email, password )
   let existngAgriculteur;
   try {
     existngAgriculteur = await agriculteur.findOne({ email: email });
