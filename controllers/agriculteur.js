@@ -33,6 +33,7 @@ const signup = async (req, res, next) => {
     adresse,
     email,
     password,
+    demandeServices:[]
   });
 
   try {
@@ -93,6 +94,35 @@ const login = async (req, res, next) => {
   res.status(200).json({ agriculteur: existngAgriculteur, token: token });
 };
 
+const getAgriculteurById = async (req, res, next) => {
+  const id = req.params.id;
+  let existngAgriculteur;
+  try {
+    existngAgriculteur = await agriculteur.findById(id);
+  } catch (err) {
+    const error = new httpError("failed", 500);
+    return next(error);
+  }
+
+  res.json({ agriculteur: existngAgriculteur });
+};
+
+const getAgriculteur = async (req, res, next) => {
+  let existngAgriculteur;
+  try {
+    existngAgriculteur = await agriculteur.find()
+  } catch (err) {
+    const error = new httpError("failed", 500);
+    return next(error);
+  }
+
+  res.json({ agriculteur: existngAgriculteur });
+};
+
 exports.signup = signup;
 
 exports.login = login;
+
+exports.getAgriculteurById = getAgriculteurById
+
+exports.getAgriculteur =getAgriculteur

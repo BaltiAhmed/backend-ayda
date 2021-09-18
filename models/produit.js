@@ -8,6 +8,8 @@ const produitScema = new schema({
   prix: { type: String, required: true },
   quantite: { type: String, required: true },
   description: { type: String, required: true },
+  Agriculteur: { type: String, required: true},
+  finished:{type:Boolean,required:true}
 });
 
 module.exports = mongoose.model("produit", produitScema);

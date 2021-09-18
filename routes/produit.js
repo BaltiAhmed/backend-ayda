@@ -20,4 +20,7 @@ route.post(
   produitControllers.ajout
 );
 
+route.get('/',produitControllers.getDemandeProduit)
+route.patch('/:id',produitControllers.AcceptDemandeProduit)
+
 module.exports = route;

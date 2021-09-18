@@ -23,4 +23,8 @@ route.post(
   agriculteurControllers.login
 );
 
+route.get('/:id',agriculteurControllers.getAgriculteurById)
+route.get('/',agriculteurControllers.getAgriculteur)
+
+
 module.exports = route;

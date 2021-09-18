@@ -90,6 +90,20 @@ const login = async (req, res, next) => {
   res.status(200).json({ responsable: existingResponsable, token: token });
 };
 
+const getResponsable = async (req, res, next) => {
+  let existingResponsable;
+  try {
+    existingResponsable = await responsable.find()
+  } catch (err) {
+    const error = new httpError("failed", 500);
+    return next(error);
+  }
+
+  res.json({ responsable: existingResponsable });
+};
+
 exports.signup = signup;
 
 exports.login = login;
+
+exports.getResponsable =getResponsable

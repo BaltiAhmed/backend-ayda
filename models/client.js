@@ -9,7 +9,7 @@ const clientSchema = new schema({
     adresse:{type:String,required:true},
     email:{type:String,required:true,unique:true},
     password:{type:String,required:true,minlenght:8},
-
+    
 })
 
 clientSchema.plugin(uniqueValidator)

@@ -1,6 +1,8 @@
 const httpError = require("../models/error");
 
 const service = require("../models/service");
+const agriculteur = require("../models/agriculteur");
+const demandeService = require("../models/demande-service");
 
 const { validationResult } = require("express-validator");
 
@@ -95,7 +97,24 @@ const deleteService = async (req, res, next) => {
   res.status(200).json({ message: "deleted" });
 };
 
+const getServiceById = async (req, res, next) => {
+  const id = req.params.id
+  let existingService;
+  try {
+    existingService = await service.findById(id);
+  } catch (err) {
+    const error = new httpError("failed", 500);
+    return next(error);
+  }
+
+  res.json({ service: existingService });
+};
+
+
+
 exports.ajout = ajout;
-exports.getService= getService
-exports.updateService = updateService
-exports.deleteService = deleteService
+exports.getService = getService;
+exports.updateService = updateService;
+exports.deleteService = deleteService;
+exports.getServiceById = getServiceById
+

@@ -25,5 +25,6 @@ route.patch(
 
 route.get("/", serviceControllers.getService);
 route.delete("/:id", serviceControllers.deleteService);
+route.get("/:id", serviceControllers.getServiceById);
 
 module.exports = route;
