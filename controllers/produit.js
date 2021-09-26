@@ -108,6 +108,56 @@ const AcceptDemandeProduit = async (req, res, next) => {
   res.status(200).json({ DemandeService: existingDemandeProduit });
 };
 
+const refuserDemandeDeService = async (req, res, next) => {
+  const { idAgriculteur } = req.body;
+  const id = req.params.id;
+
+  let existingDemandeProduit;
+  try {
+    existingDemandeProduit = await produit.findById(id);
+  } catch (err) {
+    const error = new httpError("Something went wrong", 500);
+    return next(error);
+  }
+
+  existingDemandeProduit.finished = true;
+
+  try {
+    await existingDemandeProduit.save();
+  } catch (err) {
+    const error = new httpError("Something went wrong", 500);
+    return next(error);
+  }
+
+  let existingAgriculteur;
+  try {
+    existingAgriculteur = await agriculteur.findById(idAgriculteur);
+  } catch (err) {
+    const error = new httpError("Something went wrong", 500);
+    return next(error);
+  }
+
+  let mailOptions = {
+    from: "aydaghazouani43@gmail.com", // TODO: email sender
+    to: existingAgriculteur.email, // TODO: email receiver
+    subject: "Accept de demande de service",
+    text:
+      "votre demande de vente de produit  " +
+      existingDemandeProduit.nom +
+      " est refusé de la part du responsable.",
+  };
+
+  transporter.sendMail(mailOptions, (err, data) => {
+    if (err) {
+      return log("Error occurs");
+    }
+    return log("Email sent!!!");
+  });
+
+  res.status(200).json({ DemandeService: existingDemandeProduit });
+};
+
 exports.ajout = ajout;
 exports.getDemandeProduit = getDemandeProduit;
 exports.AcceptDemandeProduit = AcceptDemandeProduit;
+exports.refuserDemandeDeService =refuserDemandeDeService

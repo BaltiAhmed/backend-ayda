@@ -14,6 +14,7 @@ const agriculteurRoutes = require("./routes/agriculteur");
 const clientRoutes = require("./routes/client");
 const produitRoute = require("./routes/produit");
 const demandeServiceRoutes = require("./routes/demande-service");
+const produitFinalRoute = require("./routes/produit-final");
 
 app.use(bodyParser.json());
 
@@ -36,6 +37,7 @@ app.use("/api/agriculteur", agriculteurRoutes);
 app.use("/api/client", clientRoutes);
 app.use("/api/produit", produitRoute);
 app.use("/api/demandeService", demandeServiceRoutes);
+app.use("/api/produitfinal", produitFinalRoute);
 
 app.use((req, res, next) => {
   const error = new httperror("could not find that page", 404);

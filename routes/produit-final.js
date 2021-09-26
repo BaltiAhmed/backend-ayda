@@ -1,7 +1,7 @@
 const express = require("express");
 const route = express.Router();
 
-const produitControllers = require("../controllers/produit");
+const produitControllers = require("../controllers/produit-final");
 
 const { check } = require("express-validator");
 
@@ -20,8 +20,6 @@ route.post(
   produitControllers.ajout
 );
 
-route.get('/',produitControllers.getDemandeProduit)
-route.patch('/:id',produitControllers.AcceptDemandeProduit)
-route.patch('/refu/:id',produitControllers.refuserDemandeDeService)
+route.get('/',produitControllers.getProduitFinal)
 
 module.exports = route;
