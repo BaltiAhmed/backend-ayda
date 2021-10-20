@@ -8,7 +8,10 @@ const produitFinalScema = new schema({
   prix: { type: String, required: true },
   quantite: { type: Number, required: true },
   description: { type: String, required: true },
-  finished:{type:Boolean,required:true}
+  scoreT: { type: Number, required: true },
+  NRating: { type: Number, required: true },
+  TRating: { type: Number, required: true },
+  finished: { type: Boolean, required: true },
 });
 
 module.exports = mongoose.model("produitFinal", produitFinalScema);

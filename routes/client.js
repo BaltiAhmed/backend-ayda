@@ -23,4 +23,6 @@ route.post(
   clientControllers.login
 );
 
+route.get('/',clientControllers.getClient)
+
 module.exports = route;

@@ -33,10 +33,12 @@ const signup = async (req, res, next) => {
     adresse,
     email,
     password,
+    prixT: 0,
+    paniers: [],
   });
 
   try {
-    await createdClient.save();
+    createdClient.save();
   } catch (err) {
     const error = new httpError("failed signup", 500);
     return next(error);
@@ -90,6 +92,20 @@ const login = async (req, res, next) => {
   res.status(200).json({ client: existingClient, token: token });
 };
 
+const getClient = async (req, res, next) => {
+  let existingClient;
+  try {
+    existingClient = await client.find();
+  } catch (err) {
+    const error = new httpError("failed", 500);
+    return next(error);
+  }
+
+  res.json({ client: existingClient });
+};
+
 exports.signup = signup;
 
 exports.login = login;
+
+exports.getClient = getClient

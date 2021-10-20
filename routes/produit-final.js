@@ -21,5 +21,10 @@ route.post(
 );
 
 route.get('/',produitControllers.getProduitFinal)
+route.get('/:id',produitControllers.getProduitFinalById)
+route.delete('/:id',produitControllers.deleteProduit)
+
+
+route.patch("/rating/:id",produitControllers.rating)
 
 module.exports = route;
