@@ -104,8 +104,23 @@ const getClient = async (req, res, next) => {
   res.json({ client: existingClient });
 };
 
+const getClientById = async (req, res, next) => {
+  const id = req.params.id;
+  let existingClient;
+  try {
+    existingClient = await client.findById(id);
+  } catch (err) {
+    const error = new httpError("failed", 500);
+    return next(error);
+  }
+
+  res.json({ client: existingClient });
+};
+
 exports.signup = signup;
 
 exports.login = login;
 
-exports.getClient = getClient
+exports.getClient = getClient;
+
+exports.getClientById = getClientById

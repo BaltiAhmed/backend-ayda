@@ -15,6 +15,7 @@ const clientRoutes = require("./routes/client");
 const produitRoute = require("./routes/produit");
 const demandeServiceRoutes = require("./routes/demande-service");
 const produitFinalRoute = require("./routes/produit-final");
+const commandeRoutes = require('./routes/commande')
 
 app.use(bodyParser.json());
 
@@ -38,6 +39,7 @@ app.use("/api/client", clientRoutes);
 app.use("/api/produit", produitRoute);
 app.use("/api/demandeService", demandeServiceRoutes);
 app.use("/api/produitfinal", produitFinalRoute);
+app.use('/api/commande', commandeRoutes)
 
 app.use((req, res, next) => {
   const error = new httperror("could not find that page", 404);

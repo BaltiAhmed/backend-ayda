@@ -20,11 +20,14 @@ route.post(
   produitControllers.ajout
 );
 
-route.get('/',produitControllers.getProduitFinal)
-route.get('/:id',produitControllers.getProduitFinalById)
-route.delete('/:id',produitControllers.deleteProduit)
+route.get("/", produitControllers.getProduitFinal);
+route.get("/:id", produitControllers.getProduitFinalById);
+route.delete("/:id", produitControllers.deleteProduit);
 
+route.patch("/rating/:id", produitControllers.rating);
 
-route.patch("/rating/:id",produitControllers.rating)
+route.post("/ajoutPanier", produitControllers.ajoutProduitPanier);
+route.post("/supprimerPanier", produitControllers.SuprimerProduitPanier);
+route.get("/panier/:id", produitControllers.getProduitByPanier);
 
 module.exports = route;

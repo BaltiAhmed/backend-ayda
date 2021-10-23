@@ -10,7 +10,8 @@ const clientSchema = new schema({
     email:{type:String,required:true,unique:true},
     password:{type:String,required:true,minlenght:8},
     prixT:{type:Number,required:true},
-    paniers:[{type:mongoose.Types.ObjectId,required:true,ref:'DemandeService'}]
+    paniers:[{type:mongoose.Types.ObjectId,required:true,ref:'produitFinal'}],
+    commandes:[{type:mongoose.Types.ObjectId,required:true,ref:'commande'}],
 
     
 })

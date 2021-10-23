@@ -24,5 +24,6 @@ route.post(
 );
 
 route.get('/',clientControllers.getClient)
+route.get('/:id',clientControllers.getClientById)
 
 module.exports = route;

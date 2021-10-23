@@ -2,6 +2,7 @@ const httpError = require("../models/error");
 
 const produit = require("../models/produit-final");
 const agriculteur = require("../models/agriculteur");
+const client = require("../models/client");
 
 const { validationResult } = require("express-validator");
 
@@ -116,8 +117,99 @@ const deleteProduit = async (req, res, next) => {
   res.status(200).json({ message: "deleted" });
 };
 
+const ajoutProduitPanier = async (req, res, next) => {
+  const { idProduit, idClient, prix } = req.body;
+
+  let existingArticle;
+
+  try {
+    existingArticle = await produit.findById(idProduit);
+  } catch {
+    return next(new httpError("failed article", 500));
+  }
+
+  let existingUser;
+
+  try {
+    existingUser = await client.findById(idClient);
+  } catch {
+    return next(new httpError("failed user", 500));
+  }
+
+  existingUser.prixT = parseInt(existingUser.prixT,10) + parseInt(prix,10);
+
+  try {
+    existingUser.paniers.push(existingArticle);
+    existingUser.save();
+  } catch {
+    return next(new httpError("failed to save ", 500));
+  }
+
+  res.status(200).json({ panier: existingUser.paniers });
+};
+
+const SuprimerProduitPanier = async (req, res, next) => {
+  const { idProduit, idClient, prix } = req.body;
+
+  let existingArticle;
+
+  try {
+    existingArticle = await produit.findById(idProduit);
+  } catch {
+    return next(new httpError("failed ", 500));
+  }
+
+  let existingUser;
+
+  try {
+    existingUser = await client.findById(idClient);
+  } catch {
+    return next(new httpError("failed ", 500));
+  }
+
+  existingUser.prixT = existingUser.prixT - prix;
+
+  console.log(existingArticle._id);
+
+  try {
+    const index = existingUser.paniers.indexOf(existingArticle._id);
+    existingUser.paniers.splice(index, 1);
+    console.log(existingUser);
+    existingUser.save();
+  } catch {
+    return next(new httpError("failed to save ", 500));
+  }
+
+  res.status(200).json({ client: existingUser });
+};
+
+const getProduitByPanier = async (req, res, next) => {
+  const id = req.params.id;
+
+  let existingProduit;
+  try {
+    existingProduit = await client.findById(id).populate("paniers");
+  } catch (err) {
+    const error = new httpError("Fetching failed", 500);
+    return next(error);
+  }
+
+  if (!existingProduit || existingProduit.paniers.length === 0) {
+    return next(new httpError("could not find article for this id.", 404));
+  }
+
+  res.json({
+    existingProduit: existingProduit.paniers.map((item) =>
+      item.toObject({ getters: true })
+    ),
+  });
+};
+
 exports.ajout = ajout;
 exports.getProduitFinal = getProduitFinal;
 exports.getProduitFinalById = getProduitFinalById;
 exports.rating = rating;
 exports.deleteProduit = deleteProduit;
+exports.ajoutProduitPanier = ajoutProduitPanier;
+exports.SuprimerProduitPanier = SuprimerProduitPanier;
+exports.getProduitByPanier = getProduitByPanier;

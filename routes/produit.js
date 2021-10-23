@@ -24,4 +24,6 @@ route.get('/',produitControllers.getDemandeProduit)
 route.patch('/:id',produitControllers.AcceptDemandeProduit)
 route.patch('/refu/:id',produitControllers.refuserDemandeDeService)
 
+
+
 module.exports = route;
