@@ -5,6 +5,8 @@ const commandeSchema = new schema({
     idClient:{type:String,required:true},
     date:{type:String,required:true},
     prix:{type:String,required:true},
+    livraison:{type:String,required:true},
+    payement:{type:String,required:true},
     adresse:{type:String,required:true},
     gouvernerat:{type:String,required:true},
     statut:{type:String,required:true},

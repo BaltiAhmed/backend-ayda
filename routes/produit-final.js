@@ -29,5 +29,6 @@ route.patch("/rating/:id", produitControllers.rating);
 route.post("/ajoutPanier", produitControllers.ajoutProduitPanier);
 route.post("/supprimerPanier", produitControllers.SuprimerProduitPanier);
 route.get("/panier/:id", produitControllers.getProduitByPanier);
+route.get("/commande/:id", produitControllers.getProduitByCommande);
 
 module.exports = route;

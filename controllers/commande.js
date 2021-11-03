@@ -7,9 +7,11 @@ const { validationResult } = require("express-validator");
 const produitFinal = require("../models/produit-final");
 
 const ajout = async (req, res, next) => {
-  const { idClient, prix, adresse, gouvernerat } = req.body;
+  const { idClient, prix, livraison, payement, frais, adresse, gouvernerat } =
+    req.body;
 
   const d = new Date();
+  console.log(idClient, prix, adresse, gouvernerat);
 
   const createdCommande = new commande({
     idClient,
@@ -23,7 +25,9 @@ const ajout = async (req, res, next) => {
       d.getHours() +
       ":" +
       d.getMinutes(),
-    prix,
+    prix: prix + frais,
+    livraison,
+    payement,
     adresse,
     gouvernerat,
     statut: "En cours de préparation",
@@ -43,7 +47,7 @@ const ajout = async (req, res, next) => {
     existinguser.commandes.push(createdCommande);
     existinguser.save();
   } catch (err) {
-    const error = new httpError("failed signup", 500);
+    const error = new httpError("failed signup!!!!!!!!!!!!!!!!!!!!!!!", 500);
     return next(error);
   }
 

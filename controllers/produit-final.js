@@ -3,6 +3,7 @@ const httpError = require("../models/error");
 const produit = require("../models/produit-final");
 const agriculteur = require("../models/agriculteur");
 const client = require("../models/client");
+const commande = require("../models/commande");
 
 const { validationResult } = require("express-validator");
 
@@ -205,6 +206,28 @@ const getProduitByPanier = async (req, res, next) => {
   });
 };
 
+const getProduitByCommande = async (req, res, next) => {
+  const id = req.params.id;
+
+  let existingProduit;
+  try {
+    existingProduit = await commande.findById(id).populate("produits");
+  } catch (err) {
+    const error = new httpError("Fetching failed", 500);
+    return next(error);
+  }
+
+  if (!existingProduit || existingProduit.produits.length === 0) {
+    return next(new httpError("could not find article for this id.", 404));
+  }
+
+  res.json({
+    existingProduit: existingProduit.produits.map((item) =>
+      item.toObject({ getters: true })
+    ),
+  });
+};
+
 exports.ajout = ajout;
 exports.getProduitFinal = getProduitFinal;
 exports.getProduitFinalById = getProduitFinalById;
@@ -213,3 +236,4 @@ exports.deleteProduit = deleteProduit;
 exports.ajoutProduitPanier = ajoutProduitPanier;
 exports.SuprimerProduitPanier = SuprimerProduitPanier;
 exports.getProduitByPanier = getProduitByPanier;
+exports.getProduitByCommande =getProduitByCommande
