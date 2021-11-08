@@ -228,6 +228,41 @@ const getProduitByCommande = async (req, res, next) => {
   });
 };
 
+const updateProduitFinal = async (req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return next(new httpError("Invalid inputs passed", 422));
+  }
+
+  const { nom, region, prix, description, quantite } = req.body;
+  console.log(nom, region, prix, description, quantite)
+  const id = req.params.id;
+
+  let existingProduit;
+  try {
+    existingProduit = await produit.findById(id);
+  } catch (err) {
+    const error = new httpError("Something went wrong", 500);
+    return next(error);
+  }
+
+  existingProduit.nom = nom;
+  existingProduit.region = region;
+  existingProduit.prix = prix;
+  existingProduit.description = description;
+  existingProduit.quantite = quantite;
+  existingProduit.image = req.file.path;
+
+  try {
+    await existingProduit.save();
+  } catch (err) {
+    const error = new httpError("Something went wrong", 500);
+    return next(error);
+  }
+
+  res.status(200).json({ produit: existingProduit });
+};
+
 exports.ajout = ajout;
 exports.getProduitFinal = getProduitFinal;
 exports.getProduitFinalById = getProduitFinalById;
@@ -237,3 +272,4 @@ exports.ajoutProduitPanier = ajoutProduitPanier;
 exports.SuprimerProduitPanier = SuprimerProduitPanier;
 exports.getProduitByPanier = getProduitByPanier;
 exports.getProduitByCommande =getProduitByCommande
+exports.updateProduitFinal = updateProduitFinal

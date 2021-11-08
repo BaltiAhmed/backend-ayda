@@ -6,6 +6,7 @@ const demandeServiceSchema = new schema({
   Agriculteur: { type: mongoose.Types.ObjectId,  ref: "agriculteur" },
   nbrJour:{type:Number,required:true},
   prix:{type:Number,required:true},
+  decision:{type:String,required:true},
   finished:{type:Boolean,required:true}
 });
 

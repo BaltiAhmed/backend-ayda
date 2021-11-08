@@ -20,6 +20,12 @@ route.post(
   produitControllers.ajout
 );
 
+route.patch(
+  "/:id",
+  fileUpload.single("image"),
+  produitControllers.updateProduitFinal
+);
+
 route.get("/", produitControllers.getProduitFinal);
 route.get("/:id", produitControllers.getProduitFinalById);
 route.delete("/:id", produitControllers.deleteProduit);

@@ -12,5 +12,6 @@ route.post(
 
 route.get('/',demandeServiceControllers.getDemandeService)
 route.patch('/:id',demandeServiceControllers.AcceptDemandeService)
+route.patch('/refus/:id',demandeServiceControllers.RefusDemandeService)
 
 module.exports = route;
