@@ -6,6 +6,17 @@ const commande = require("../models/commande");
 const { validationResult } = require("express-validator");
 const produitFinal = require("../models/produit-final");
 
+const nodemailer = require("nodemailer");
+
+const log = console.log;
+let transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: process.env.EMAIL || "aydaghazouani43@gmail.com", // TODO: your gmail account
+    pass: process.env.PASSWORD || "ayda07993137", // TODO: your gmail password
+  },
+});
+
 const ajout = async (req, res, next) => {
   const { idClient, prix, livraison, payement, frais, adresse, gouvernerat } =
     req.body;
@@ -107,7 +118,100 @@ const ajoutArticleToCommande = async (req, res, next) => {
   res.status(200).json({ commande: existingCommande });
 };
 
+const ValiderCommande = async (req, res, next) => {
+  const { idClient } = req.body;
+  const id = req.params.id;
+  let existingCommande;
+
+  try {
+    existingCommande = await commande.findById(id);
+  } catch {
+    return next(new httpError("failed ", 500));
+  }
+
+  let existingClient;
+
+  try {
+    existingClient = await client.findById(idClient);
+  } catch {
+    return next(new httpError("failed ", 500));
+  }
+
+  existingCommande.statut = "Valider";
+
+  try {
+    existingCommande.save();
+  } catch {
+    return next(new httpError("failed to save ", 500));
+  }
+
+  let mailOptions = {
+    from: "aydaghazouani43@gmail.com", // TODO: email sender
+    to: existingClient.email, // TODO: email receiver
+    subject: "Accept de demande de service",
+    text:
+      "votre Commande de date " +
+      existingCommande.date +
+      " est valider vous pouver la récupérer dans nos locaux.",
+  };
+
+  transporter.sendMail(mailOptions, (err, data) => {
+    if (err) {
+      return log("Error occurs");
+    }
+    return log("Email sent!!!");
+  });
+
+  res.status(200).json({ commande: existingCommande });
+};
+
+const annulerCommande = async (req, res, next) => {
+  const { idClient } = req.body;
+  const id = req.params.id;
+  let existingCommande;
+
+  try {
+    existingCommande = await commande.findById(id);
+  } catch {
+    return next(new httpError("failed ", 500));
+  }
+
+  let existingClient;
+
+  try {
+    existingClient = await client.findById(idClient);
+  } catch {
+    return next(new httpError("failed ", 500));
+  }
+
+  existingCommande.statut = "Annuler";
+
+  try {
+    existingCommande.save();
+  } catch {
+    return next(new httpError("failed to save ", 500));
+  }
+
+  let mailOptions = {
+    from: "aydaghazouani43@gmail.com", // TODO: email sender
+    to: existingClient.email, // TODO: email receiver
+    subject: "Accept de demande de service",
+    text: "votre Commande de date " + existingCommande.date + " est Annuler",
+  };
+
+  transporter.sendMail(mailOptions, (err, data) => {
+    if (err) {
+      return log("Error occurs");
+    }
+    return log("Email sent!!!");
+  });
+
+  res.status(200).json({ commande: existingCommande });
+};
+
 exports.ajout = ajout;
 exports.getCommande = getCommande;
 exports.getCommandeById = getCommandeById;
 exports.ajoutArticleToCommande = ajoutArticleToCommande;
+exports.ValiderCommande = ValiderCommande;
+exports.annulerCommande = annulerCommande;
