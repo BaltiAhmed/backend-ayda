@@ -7,6 +7,7 @@ const produitFinalScema = new schema({
   region: { type: String, required: true },
   prix: { type: String, required: true },
   quantite: { type: Number, required: true },
+  categorie: { type: String, required: true },
   description: { type: String, required: true },
   scoreT: { type: Number, required: true },
   NRating: { type: Number, required: true },

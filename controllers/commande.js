@@ -209,9 +209,32 @@ const annulerCommande = async (req, res, next) => {
   res.status(200).json({ commande: existingCommande });
 };
 
+const getCommandeByClient = async (req, res, next) => {
+  const id = req.params.id;
+
+  let existingCommande;
+  try {
+    existingCommande = await client.findById(id).populate("commandes");
+  } catch (err) {
+    const error = new httpError("Fetching failed", 500);
+    return next(error);
+  }
+
+  if (!existingCommande || existingCommande.commandes.length === 0) {
+    return next(new httpError("could not find article for this id.", 404));
+  }
+
+  res.json({
+    existingCommande: existingCommande.commandes.map((item) =>
+      item.toObject({ getters: true })
+    ),
+  });
+};
+
 exports.ajout = ajout;
 exports.getCommande = getCommande;
 exports.getCommandeById = getCommandeById;
 exports.ajoutArticleToCommande = ajoutArticleToCommande;
 exports.ValiderCommande = ValiderCommande;
 exports.annulerCommande = annulerCommande;
+exports.getCommandeByClient = getCommandeByClient

@@ -20,7 +20,7 @@ let transporter = nodemailer.createTransport({
 });
 
 const ajout = async (req, res, next) => {
-  const { nom, region, prix, description, quantite } = req.body;
+  const { nom, region, prix, description, quantite,categorie } = req.body;
 
   const createdProduit = new produit({
     nom,
@@ -28,6 +28,7 @@ const ajout = async (req, res, next) => {
     region,
     prix,
     quantite,
+    categorie,
     description,
     scoreT: 0,
     NRating: 0,
@@ -234,7 +235,7 @@ const updateProduitFinal = async (req, res, next) => {
     return next(new httpError("Invalid inputs passed", 422));
   }
 
-  const { nom, region, prix, description, quantite } = req.body;
+  const { nom, region, prix, description, quantite , categorie} = req.body;
   console.log(nom, region, prix, description, quantite)
   const id = req.params.id;
 
@@ -251,6 +252,7 @@ const updateProduitFinal = async (req, res, next) => {
   existingProduit.prix = prix;
   existingProduit.description = description;
   existingProduit.quantite = quantite;
+  existingProduit.categorie = categorie;
   existingProduit.image = req.file.path;
 
   try {
