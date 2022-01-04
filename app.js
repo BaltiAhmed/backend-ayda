@@ -17,6 +17,7 @@ const demandeServiceRoutes = require("./routes/demande-service");
 const produitFinalRoute = require("./routes/produit-final");
 const commandeRoutes = require('./routes/commande')
 const categorieRoute = require("./routes/categorie");
+const messageRoute = require("./routes/message");
 
 
 app.use(bodyParser.json());
@@ -43,6 +44,7 @@ app.use("/api/demandeService", demandeServiceRoutes);
 app.use("/api/produitfinal", produitFinalRoute);
 app.use('/api/commande', commandeRoutes)
 app.use("/api/categorie", categorieRoute);
+app.use("/api/message", messageRoute);
 
 
 app.use((req, res, next) => {

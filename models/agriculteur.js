@@ -9,7 +9,8 @@ const agriculteurSchema = new schema({
     adresse:{type:String,required:true},
     email:{type:String,required:true,unique:true},
     password:{type:String,required:true,minlenght:8},
-    demandeServices:[{type:mongoose.Types.ObjectId,required:true,ref:'DemandeService'}]
+    demandeServices:[{type:mongoose.Types.ObjectId,required:true,ref:'DemandeService'}],
+    messages:[{type:mongoose.Types.ObjectId,required:true,ref:'message'}]
 
 })
 

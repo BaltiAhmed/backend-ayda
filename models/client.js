@@ -12,6 +12,7 @@ const clientSchema = new schema({
     prixT:{type:Number,required:true},
     paniers:[{type:mongoose.Types.ObjectId,required:true,ref:'produitFinal'}],
     commandes:[{type:mongoose.Types.ObjectId,required:true,ref:'commande'}],
+    messages:[{type:mongoose.Types.ObjectId,required:true,ref:'message'}]
 
     
 })
